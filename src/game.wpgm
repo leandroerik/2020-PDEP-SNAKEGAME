@@ -1,0 +1,11 @@
+ import wollok.game.*
+import objetos.*
+import snakeGame.*
+import direcciones.*
+import niveles.*
+
+program game {
+	
+	snakeGame.iniciar()
+	
+}

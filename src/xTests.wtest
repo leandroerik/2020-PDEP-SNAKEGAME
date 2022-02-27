@@ -1,0 +1,69 @@
+import objetos.*
+import direcciones.*
+import snakeGame.*
+import niveles.*
+import serpiente.*
+import wollok.game.*
+
+
+describe "Test serpiente"{
+	fixture{
+			
+		snakeGame.configurarJuego()
+		snakeGame.agregarPersonajes()
+		snakeGame.configurarTeclas()
+		snakeGame.configurarAcciones()
+	
+		nivel1.empezarAJugar()
+		
+	}
+
+test "Una fruta es comida por una serpiente" {
+	
+	fruta.choqueConSnake()
+	
+	assert.equals(fruta.vecesComida(),1)
+	assert.equals(serpiente.cuerpo().size(),3)
+
+}
+test "se agrega un parte al cuerpo de la serpiente"{
+	serpiente.agregarParteACuerpo()
+	
+	assert.equals(serpiente.cuerpo().size(),3)
+}
+
+test "pierde si choca con el muro"{
+	const muro = new Muro(position = game.at(4,2))
+	game.addVisualCharacter(muro)
+	muro.choqueConSnake()
+	
+	
+	assert.that(snakeGame.perdio())
+	
+}
+test "pierde si se come asi misma"{
+	
+	serpiente.cuerpo().last().choqueConSnake()
+	
+	assert.that(snakeGame.perdio())
+}
+test "si come posion roja inviente el sentido"{
+	game.addVisual(pocionRoja)
+	
+	pocionRoja.choqueConSnake()
+	
+	assert.equals(serpiente.estado(),locura)
+}
+
+}
+
+describe "test niveles"{
+	test "pasar de nivel"{
+	serpiente.aparecer()
+	game.addVisualCharacter(hoyo)
+	
+	assert.equals(snakeGame.nivel(),nivel1)
+	hoyo.choqueConSnake()
+	assert.equals(snakeGame.nivel(),nivel2)
+}
+}
